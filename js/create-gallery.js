@@ -27,6 +27,9 @@ function createGallery(images) {
 
 galleryListEl.addEventListener('click', OnImageOfGalleryClick);
 
+let currentImg;
+  let nextImg;
+
 function OnImageOfGalleryClick(event) {
     const isImageEl = event.target.classList.contains('gallery__image');
     if (!isImageEl) return;
@@ -40,8 +43,10 @@ function OnImageOfGalleryClick(event) {
   openModal();
 
   imageEl.src = imageLargeUrl;
+  currentImg = imageEl;
 
   showModalImage(imageEl);
+  turnImagesRight(event);
 
 
 }
@@ -77,20 +82,7 @@ function closeModalByEscape(event) {
 
 }
 
-function turnImagesRight(event) {
-  if (event.code === 'ArrowRight') {
-    console.log(event.code);
-    // closeModal();
-  }
 
-}
-function turnImagesLeft(event) {
-  if (event.code === 'ArrowLeft') {
-    console.log(event.code);
-    // closeModal();
-}
-
-}
 
 
 function closeModal() {
@@ -107,4 +99,45 @@ function showModalImage(image) {
   imageModalEl.src = image.dataset.source;
   imageModalEl.alt = image.alt;
 };
+
+const arrayOfGalleryImages = document.querySelectorAll('.gallery__image');
+console.log(arrayOfGalleryImages);
+const arrayOfGalleryImagesUrl = [...arrayOfGalleryImages].map((image) => {
+  return image.dataset.source;
+});
+
+
+console.log(arrayOfGalleryImagesUrl);
+
+function getSlider(array) {
+
+   const newUrl = array.forEach((element, index) => {
+
+     nextImg = currentImg;
+     if (currentImg.src === element) {
+       console.log(nextImg);
+       nextImg.src = element[index + 1];
+    }
+
+  });
+  return newUrl;
+
+}
+
+function turnImagesRight(event) {
+  if (event.code === 'ArrowRight') {
+    console.log(event.code);
+    getSlider(arrayOfGalleryImagesUrl);
+
+    // closeModal();
+  }
+
+}
+function turnImagesLeft(event) {
+  if (event.code === 'ArrowLeft') {
+    console.log(event.code);
+    // closeModal();
+}
+
+}
 
