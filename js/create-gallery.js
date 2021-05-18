@@ -47,6 +47,7 @@ function OnImageOfGalleryClick(event) {
 
   showModalImage(imageEl);
   turnImagesRight(event);
+  turnImagesLeft(event);
 
 
 }
@@ -60,6 +61,7 @@ function openModal() {
 }
 
 const imageModalEl = document.querySelector('.lightbox__image');
+// let imageModalEl = document.querySelector('.lightbox__image');
 
 modalCloseBtnEl.addEventListener('click', closeModal);
 
@@ -107,27 +109,62 @@ const arrayOfGalleryImagesUrl = [...arrayOfGalleryImages].map((image) => {
 });
 
 
-console.log(arrayOfGalleryImagesUrl);
+// console.log(arrayOfGalleryImagesUrl);
 
 function getSlider(array) {
 
-   const newUrl = array.forEach((element, index) => {
 
-     nextImg = currentImg;
-     if (currentImg.src === element) {
-       console.log(nextImg);
-       nextImg.src = element[index + 1];
-    }
 
-  });
-  return newUrl;
+  // const newUrl = array.forEach((element, index) => {
+
+  //   if (currentImg === element) {
+  //     console.log(currentImg);
+  //     console.log(element);
+  //     console.log(index);
+  //     nextImg = array[index+1];
+  //     // currentImg = array[index+1];
+  //     console.log(nextImg);
+  //     showModalImage(nextImg);
+  //     // console.log(currentImg);
+  //     // showModalImage(currentImg);
+  //     // currentImg = nextImg;
+  //     //  nextImg.src = element[index + 1];
+  // //      imageModalEl.src = element[index + 1].dataset.source;
+  // // imageModalEl.alt = element[index + 1].alt;
+  //   }
+
+  // });
+  // return newUrl;
 
 }
+
+function getIndexOfImage(array) {
+  const index = [...array].indexOf(currentImg);
+  console.log(currentImg);
+  console.log(index);
+  return index;
+}
+
 
 function turnImagesRight(event) {
   if (event.code === 'ArrowRight') {
     console.log(event.code);
-    getSlider(arrayOfGalleryImagesUrl);
+    // getSlider(arrayOfGalleryImagesUrl);
+    // getSlider(arrayOfGalleryImages);
+    // getSlider();
+    let index = getIndexOfImage(arrayOfGalleryImages);
+    // imageModalEl = arrayOfGalleryImages[i + 1];
+    if ((index + 1) > (arrayOfGalleryImages.length - 1)) {
+      currentImg = arrayOfGalleryImages[0];
+    } else {
+      currentImg = arrayOfGalleryImages[index + 1];
+    }
+    showModalImage(currentImg);
+
+  //   imageModalEl.src = arrayOfGalleryImages[i+1].dataset.source;
+  // imageModalEl.alt = arrayOfGalleryImages[i+1].alt;
+
+
 
     // closeModal();
   }
@@ -137,6 +174,16 @@ function turnImagesLeft(event) {
   if (event.code === 'ArrowLeft') {
     console.log(event.code);
     // closeModal();
+    let index = getIndexOfImage(arrayOfGalleryImages);
+    // imageModalEl = arrayOfGalleryImages[i + 1];
+if ((index - 1) < 0) {
+      currentImg = arrayOfGalleryImages[arrayOfGalleryImages.length - 1];
+    } else {
+
+      currentImg = arrayOfGalleryImages[index - 1];
+    }
+
+    showModalImage(currentImg);
 }
 
 }
