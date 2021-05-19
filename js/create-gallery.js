@@ -5,6 +5,9 @@ const galleryListEl = document.querySelector('.js-gallery');
 const galleryMarkup = createGallery(images);
 galleryListEl.insertAdjacentHTML('afterbegin', galleryMarkup);
 
+let currentModalShownImg;
+
+
 function createGallery(images) {
     return images.map(({ preview, original, description }) => {
         return `<li class="gallery__item">
@@ -26,8 +29,10 @@ function createGallery(images) {
 };
 
 galleryListEl.addEventListener('click', OnImageOfGalleryClick);
+const imageModalEl = document.querySelector('.lightbox__image');
 
-let currentModalShownImg;
+const modalEl = document.querySelector('.js-lightbox');
+const modalCloseBtnEl = document.querySelector('[data-action="close-lightbox"]');
 
 function OnImageOfGalleryClick(event) {
     const isImageEl = event.target.classList.contains('gallery__image');
@@ -35,29 +40,23 @@ function OnImageOfGalleryClick(event) {
 
   const imageEl = event.target;
   const imageLargeUrl = imageEl.dataset.source;
-
-  window.addEventListener('keydown', OnCloseModalByEscape);
-  window.addEventListener('keydown', OnTurnImagesRight);
-  window.addEventListener('keydown', OnturnImagesLeft);
+  event.preventDefault();
 
   openModal();
 
-  imageEl.src = imageLargeUrl;
+  imageModalEl.src = imageLargeUrl;
   currentModalShownImg = imageEl;
 
   showModalImage(imageEl);
-  OnTurnImagesRight(event);
-  OnturnImagesLeft(event);
-}
 
-const modalEl = document.querySelector('.js-lightbox');
-const modalCloseBtnEl = document.querySelector('[data-action="close-lightbox"]');
+}
 
 function openModal() {
   modalEl.classList.add('is-open');
+  window.addEventListener('keydown', OnCloseModalByEscape);
+  window.addEventListener('keydown', OnTurnImagesRight);
+  window.addEventListener('keydown', OnTurnImagesLeft);
 }
-
-const imageModalEl = document.querySelector('.lightbox__image');
 
 modalCloseBtnEl.addEventListener('click', OnCloseModal);
 
@@ -79,7 +78,7 @@ function OnCloseModalByEscape(event) {
 function OnCloseModal() {
   window.removeEventListener('keyup', OnCloseModalByEscape);
   window.removeEventListener('keyup', OnTurnImagesRight);
-  window.removeEventListener('keyup', OnturnImagesLeft);
+  window.removeEventListener('keyup', OnTurnImagesLeft);
   modalEl.classList.remove('is-open');
   imageModalEl.src = '';
 
@@ -113,7 +112,7 @@ function OnTurnImagesRight(event) {
   }
 
 }
-function OnturnImagesLeft(event) {
+function OnTurnImagesLeft(event) {
   if (event.code === 'ArrowLeft') {
 
     let index = getIndexOfImage(arrayOfGalleryImages);
